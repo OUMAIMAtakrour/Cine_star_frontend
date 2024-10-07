@@ -2,12 +2,12 @@ import "../index.css"
 import "../assets/js/reservation"
 const CinemaBooking = () => {
     return (
-      <div className="bg-blue-900 text-white flex flex-col items-center justify-center min-h-screen w-screen font-sans">
+      <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen w-screen font-sans">
         {/* Carousel Section */}
         <div className="relative w-full h-[400px] mb-12">
           <div className="absolute inset-0 bg-black/50"></div>
           <img 
-            src="/api/placeholder/1920/400" 
+            src="/src/assets/img/image 2.png" 
             alt="Movie Banner" 
             className="w-full h-full object-cover"
           />

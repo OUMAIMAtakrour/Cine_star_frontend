@@ -92,7 +92,7 @@ const StreamingApp = () => {
         AVAILABLE SESSIONS
       </h2>
       <div>
-        <div className="grid grid-cols-4 gap-8   justify-items-center mb-20">
+        <div className="grid grid-cols-4 gap-8 justify-items-center mb-20">
           {Array(6)
             .fill(0)
             .map((_, index) => (
@@ -163,16 +163,13 @@ const StreamingApp = () => {
         </div>
       </div>
       <footer className="rounded-t-2xl grid grid-cols-3 bg-gradient-to-br from-[#7990B3] to-white backdrop-blur-sm py-20">
-  {/* Logo and Social Icons */}
   <div className="flex items-center pl-8">
     <img src="/src/assets/img/image 6.svg" alt="Logo" className="mr-2" />
     <p className="font-bold text-xl mr-4">CINE.STAR</p>
     
-    {/* Social Media Icons */}
    
   </div>
 
-  {/* Navigation Links */}
   <div className="flex flex-col items-center space-y-8">
     <div className="flex justify-center gap-8 text-xl">
       <Link className="hover:text-gray-700 transition-colors">HOME</Link>

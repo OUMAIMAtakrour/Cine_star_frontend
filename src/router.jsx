@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import StreamingPlatform from "./Views/cin";
 import Signup from "./Views/SignUp";
 import CinemaBooking from "./Views/Reservation";
-import MovieCard from "./Views/Preview";
+import MoviePreviewPage from "./Views/Preview";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/preview",
-    element: <MovieCard />,
+    element: <MoviePreviewPage/>,
   },
 ]);
 export default router;
