@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../helpers/axios";
 import "../assets/css/test.css";
 
-function Signup({ onSignupSuccess }) {
+function Login({ onLoginSuccess }) {
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
-    role: "",
     password: ""
   });
 
@@ -30,17 +28,17 @@ function Signup({ onSignupSuccess }) {
     setError("");
 
     try {
-      const response = await axiosClient.post('/auth/register', formData);
+      const response = await axiosClient.post('/auth/login', formData);
       
       localStorage.setItem('TOKEN', response.data.token);
       
-      if (onSignupSuccess) {
-        onSignupSuccess(response.data);
+      if (onLoginSuccess) {
+        onLoginSuccess(response.data);
       }
 
-      navigate(formData.role === 'client' ? '/reservation' : '/dashboard');
+      navigate(response.data.user.role === 'client' ? '/reservation' : '/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || "Signup failed. Please try again.");
+      setError(err.response?.data?.message || "Login failed. Please check your credentials.");
     } finally {
       setIsLoading(false);
     }
@@ -51,9 +49,9 @@ function Signup({ onSignupSuccess }) {
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-br from-blue-400 to-green-400 justify-around items-center hidden rounded-l-2xl">
         <div>
           <h1 className="text-white font-bold text-4xl font-sans">
-            Your Health
+            Welcome Back
           </h1>
-          <p className="text-white mt-1">Is Our Treasure</p>
+          <p className="text-white mt-1">To Your Health Portal</p>
         </div>
         <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
         <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
@@ -64,39 +62,15 @@ function Signup({ onSignupSuccess }) {
       <div className="flex md:w-1/2 justify-center py-10 items-center glass rounded-r-2xl">
         <form className="bg-white w-1/2" onSubmit={handleSubmit}>
           <h1 className="text-gray-800 font-bold text-2xl mb-1">
-            Hello Again!
+            Welcome Back!
           </h1>
-          <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
+          <p className="text-sm font-normal text-gray-600 mb-7">Please login to continue</p>
 
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
               <span className="block sm:inline">{error}</span>
             </div>
           )}
-
-          <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <input
-              className="pl-2 outline-none border-none"
-              type="text"
-              name="name"
-              placeholder="Full name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
 
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
             <svg
@@ -124,34 +98,6 @@ function Signup({ onSignupSuccess }) {
             />
           </div>
 
-          <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
-              />
-            </svg>
-            <select 
-              className="pl-2 outline-none border-none w-full"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Choose role</option>
-              <option value="client">Client</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -176,6 +122,15 @@ function Signup({ onSignupSuccess }) {
             />
           </div>
 
+          <div className="text-right mt-2">
+            <a
+              href="/forgot-password"
+              className="text-sm text-blue-400 hover:text-blue-500"
+            >
+              Forgot Password?
+            </a>
+          </div>
+
           <button
             type="submit"
             disabled={isLoading}
@@ -183,17 +138,17 @@ function Signup({ onSignupSuccess }) {
               isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500'
             }`}
           >
-            {isLoading ? 'Signing up...' : 'Sign Up'}
+            {isLoading ? 'Logging in...' : 'Login'}
           </button>
 
           <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
-            Already have an account?{" "}
-            <a
-              href="/login"
+            Don't have an account?{" "}
+            <Link
+              to="/register"
               className="leading-loose text-xs text-center text-black font-semibold hover:text-blue-700"
             >
-              Login
-            </a>
+              Sign Up
+            </Link>
           </span>
         </form>
       </div>
@@ -201,4 +156,4 @@ function Signup({ onSignupSuccess }) {
   );
 }
 
-export default Signup;
+export default Login;

@@ -3,7 +3,7 @@ import StreamingPlatform from "./Views/cin";
 import Signup from "./Views/SignUp";
 import CinemaBooking from "./Views/Reservation";
 import MoviePreviewPage from "./Views/Preview";
-
+import Login from "./Views/Login";
 const router = createBrowserRouter([
   {
     path: "/cin",
@@ -20,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/preview",
     element: <MoviePreviewPage/>,
+  },
+  {
+    path: "/login",
+    element: <Login/>,
   },
 ]);
 export default router;

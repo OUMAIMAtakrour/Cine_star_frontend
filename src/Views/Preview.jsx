@@ -1,7 +1,6 @@
 import React from 'react';
 import { Star, Clock, Calendar, PlayCircle } from 'lucide-react';
 
-// Custom Button Component
 const Button = ({ 
   children, 
   variant = 'default',
