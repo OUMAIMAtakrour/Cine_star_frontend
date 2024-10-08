@@ -38,7 +38,7 @@ function Signup({ onSignupSuccess }) {
         onSignupSuccess(response.data);
       }
 
-      navigate(formData.role === 'client' ? '/reservation' : '/dashboard');
+      navigate(formData.role === 'client' ? '/cin' : '/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed. Please try again.");
     } finally {

@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     element: <CinemaBooking />,
   },
   {
-    path: "/preview",
+    path: "/film/:id/sessions",
     element: <MoviePreviewPage/>,
   },
   {

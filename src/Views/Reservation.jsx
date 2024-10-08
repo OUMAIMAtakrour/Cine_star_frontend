@@ -3,7 +3,6 @@ import "../assets/js/reservation"
 const CinemaBooking = () => {
     return (
       <div className="bg-black text-white flex flex-col items-center justify-center min-h-screen w-screen font-sans">
-        {/* Carousel Section */}
         <div className="relative w-full h-[400px] mb-12">
           <div className="absolute inset-0 bg-black/50"></div>
           <img 
@@ -17,7 +16,6 @@ const CinemaBooking = () => {
           </div>
         </div>
   
-        {/* Legend */}
         <ul className="showcase mb-8 flex items-center justify-center space-x-10">
           <li className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gray-600 rounded-lg"></div>
@@ -33,11 +31,9 @@ const CinemaBooking = () => {
           </li>
         </ul>
   
-        {/* Screen */}
         <div className="container perspective mb-8">
           <div className="screen bg-white/20 h-24 w-full mb-4 transform -skew-x-12"></div>
           
-          {/* Seats Grid */}
           <div className="grid grid-cols-8 gap-4 max-w-3xl mx-auto p-8">
             {[...Array(32)].map((_, index) => (
               <button
@@ -48,7 +44,6 @@ const CinemaBooking = () => {
           </div>
         </div>
   
-        {/* Summary */}
         <div className="text-center mb-8">
           <p className="text-lg">
             You have selected <span className="text-yellow-400">0</span> seat(s) 
