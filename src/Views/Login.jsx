@@ -36,7 +36,7 @@ function Login({ onLoginSuccess }) {
         onLoginSuccess(response.data);
       }
 
-      navigate(response.data.user.role === 'client' ? '/reservation' : '/dashboard');
+      navigate(response.data.user.role === 'client' ? '/cin' : '/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Please check your credentials.");
     } finally {

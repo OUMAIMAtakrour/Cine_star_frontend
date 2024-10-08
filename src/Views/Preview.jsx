@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Star, Clock, Calendar, PlayCircle } from "lucide-react";
 import axiosClient from "../helpers/axios";
 
@@ -30,6 +30,7 @@ const Button = ({
 
 const MoviePreviewPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,6 +49,18 @@ const MoviePreviewPage = () => {
 
     fetchMovieDetail();
   }, [id]);
+
+  const handleSessionSelect = (session) => {
+    navigate(`/reservation/${session._id}`, { 
+      state: { 
+        movieName: movie.name,
+        movieDuration: movie.duration,
+        sessionTime: session.hour,
+        sessionDate: session.date,
+        roomName: session.room.name
+      } 
+    });
+  };
 
   const groupSessionsByDate = () => {
     if (!movie || !movie.sessions) return {};
@@ -116,6 +129,7 @@ const MoviePreviewPage = () => {
                     key={session._id}
                     variant="outline"
                     className="flex items-center gap-2"
+                    onClick={() => handleSessionSelect(session)}
                   >
                     <Clock className="w-4 h-4" />
                     {session.hour}

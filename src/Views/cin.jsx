@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import HomeHeader from "../components/Navbar/homeHeader";
 import axiosClient from "../helpers/axios";
-import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   faTwitter,
   faFacebook,
@@ -19,10 +19,14 @@ import {
 
 const StreamingApp = () => {
   const [movies, setMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const navigate = useNavigate();
+
+  const categories = ["All", "Horror", "Fantasy", "Action", "Romance", "Animation", "Sci-fi"];
 
   const fetchMovies = async () => {
     try {
@@ -69,13 +73,26 @@ const StreamingApp = () => {
     fetchMovies();
   }, [retryCount]);
 
- 
+  useEffect(() => {
+    if (selectedCategory === "All") {
+      setFilteredMovies(movies);
+    } else {
+      setFilteredMovies(
+        movies.filter((movie) => movie.category === selectedCategory)
+      );
+    }
+  }, [movies, selectedCategory]);
+
   const handleRetry = () => {
     setRetryCount((prev) => prev + 1);
   };
 
   const handleMovieClick = (movieId) => {
     navigate(`/film/${movieId}/sessions`);
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
   };
 
   const LoadingState = () => (
@@ -101,7 +118,7 @@ const StreamingApp = () => {
 
   const MovieGrid = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {movies.map((movie) => (
+      {filteredMovies.map((movie) => (
         <Card
           key={movie._id}
           className="cursor-pointer transform transition-transform hover:scale-105"
@@ -173,18 +190,17 @@ const StreamingApp = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-6 gap-20 mb-6 mx-4">
-          {[
-            "Horror",
-            "Fantasy",
-            "Action",
-            "Romance",
-            "Animation",
-            "Sci-fi",
-          ].map((category) => (
+        {/* Category Filter */}
+        <div className="flex justify-center space-x-4 mb-6">
+          {categories.map((category) => (
             <button
               key={category}
-              className="py-2 glass rounded-lg hover:bg-transparent transition"
+              className={`py-2 px-4 glass rounded-lg transition ${
+                selectedCategory === category
+                  ? "bg-blue-500 text-white"
+                  : "hover:bg-transparent"
+              }`}
+              onClick={() => handleCategoryChange(category)}
             >
               {category}
             </button>
@@ -217,6 +233,8 @@ const StreamingApp = () => {
           </div>
           <p className="text-sm text-gray-600">©All rights reserved</p>
         </div>
+       
+
         <div className="flex space-x-4">
           <a
             href="https://twitter.com"

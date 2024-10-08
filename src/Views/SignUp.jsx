@@ -1,26 +1,26 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../helpers/axios";
 import "../assets/css/test.css";
 
 function Signup({ onSignupSuccess }) {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     role: "",
-    password: ""
+    password: "",
   });
-
+  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -30,17 +30,19 @@ function Signup({ onSignupSuccess }) {
     setError("");
 
     try {
-      const response = await axiosClient.post('/auth/register', formData);
-      
-      localStorage.setItem('TOKEN', response.data.token);
+      const response = await axiosClient.post("/auth/register", formData);
+       
+      localStorage.setItem("TOKEN", response.data.token);
       
       if (onSignupSuccess) {
         onSignupSuccess(response.data);
       }
-
-      navigate(formData.role === 'client' ? '/cin' : '/dashboard');
+      
+      navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Signup failed. Please try again.");
+      setError(
+        err.response?.data?.message || "Signup failed. Please try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +71,10 @@ function Signup({ onSignupSuccess }) {
           <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
 
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <div
+              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+              role="alert"
+            >
               <span className="block sm:inline">{error}</span>
             </div>
           )}
@@ -139,7 +144,7 @@ function Signup({ onSignupSuccess }) {
                 d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"
               />
             </svg>
-            <select 
+            <select
               className="pl-2 outline-none border-none w-full"
               name="role"
               value={formData.role}
@@ -151,7 +156,7 @@ function Signup({ onSignupSuccess }) {
               <option value="admin">Admin</option>
             </select>
           </div>
-
+          
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -180,20 +185,20 @@ function Signup({ onSignupSuccess }) {
             type="submit"
             disabled={isLoading}
             className={`block w-full bg-blue-400 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 ${
-              isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500'
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-500"
             }`}
           >
-            {isLoading ? 'Signing up...' : 'Sign Up'}
+            {isLoading ? "Signing up..." : "Sign Up"}
           </button>
 
           <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
             Already have an account?{" "}
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="leading-loose text-xs text-center text-black font-semibold hover:text-blue-700"
             >
               Login
-            </a>
+            </Link>
           </span>
         </form>
       </div>

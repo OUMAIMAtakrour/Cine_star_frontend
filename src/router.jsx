@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/reservation",
+    path: "/reservation/:id",
     element: <CinemaBooking />,
   },
   {
