@@ -5,7 +5,7 @@ import StreamingPlatform from './Views/cin'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+ 
 
   return (
     <>

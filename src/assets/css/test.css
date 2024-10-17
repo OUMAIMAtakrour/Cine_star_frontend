@@ -1,1 +1,7 @@
 /* StreamingPlatform.css */
+.body {
+    background: rgb(84, 127, 190);
+    background: linear-gradient(143deg, rgb(146, 175, 219) 0%, rgb(63, 80, 109) 100%);
+   
+    /* font-family: Arial, sans-serif; */
+  }

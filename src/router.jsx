@@ -4,6 +4,7 @@ import Signup from "./Views/SignUp";
 import CinemaBooking from "./Views/Reservation";
 import MoviePreviewPage from "./Views/Preview";
 import Login from "./Views/Login";
+import CinemaTicketCard from "./Views/card";
 const router = createBrowserRouter([
   {
     path: "/cin",
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login/>,
+  },
+  {
+    path: "/card",
+    element: <CinemaTicketCard/>,
   },
 ]);
 export default router;

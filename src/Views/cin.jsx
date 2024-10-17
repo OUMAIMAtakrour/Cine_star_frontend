@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import HomeHeader from "../components/Navbar/homeHeader";
 import axiosClient from "../helpers/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import ("../assets/css/test.css")
 import {
   faTwitter,
   faFacebook,
@@ -19,6 +19,7 @@ import {
 
 const StreamingApp = () => {
   const [movies, setMovies] = useState([]);
+  
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,31 +33,31 @@ const StreamingApp = () => {
     try {
       setLoading(true);
       setError(null);
-
+  
       const token = localStorage.getItem("TOKEN");
       if (!token) {
         throw new Error("Authentication required");
       }
-
-      const response = await axiosClient.get("/film", {
-        timeout: 10000,
-      });
-
+  
+      const response = await axiosClient.get("/film", { timeout: 10000 });
+  
       if (!response.data) {
         throw new Error("No data received from server");
       }
-
+  
+      console.log("Full Response:", response.data);
+  
       setMovies(response.data);
       setLoading(false);
     } catch (err) {
       console.error("Movie fetch error:", err);
-
+  
       if (err.response?.status === 401) {
         setError("Please login to view movies");
         navigate("/login");
         return;
       }
-
+  
       if (err.code === "ECONNABORTED") {
         setError("Request timed out. Please check your connection.");
       } else if (!navigator.onLine) {
@@ -64,10 +65,11 @@ const StreamingApp = () => {
       } else {
         setError(`Failed to fetch movies: ${err.message}`);
       }
-
+  
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchMovies();
@@ -127,10 +129,7 @@ const StreamingApp = () => {
           <CardHeader floated={false} className="h-64 relative">
             <img
               src={
-                movie.image_url ||
-                `/api/placeholder/400/400?text=${encodeURIComponent(
-                  movie.name
-                )}`
+                `http://localhost:8080/${movie?.image_path }`
               }
               alt={movie.name}
               className="w-full h-full object-cover"
