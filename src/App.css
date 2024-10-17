@@ -1,0 +1,31 @@
+.container{
+    width: 90%;
+}
+.par{
+    font-size: large;
+}
+.custom-blur{
+    backdrop-filter: blur(3px) saturate(101%);
+    -webkit-backdrop-filter: blur(3px) saturate(101%);
+    background: linear-gradient(to  right ,rgb(19, 155, 155, 0.23) 50%, rgba(52, 197, 197, 0.23));
+    border-radius: 12px;
+    /* border: 1px solid teal; */
+}
+
+ol { 
+    list-style: none; 
+    counter-reset: num; 
+} 
+
+ol li { 
+    counter-increment: num; 
+} 
+
+ol li::before { 
+    content: counter(num) ". "; 
+    color: teal; 
+} 
+
+.ha{
+    margin-top: -50px;
+}

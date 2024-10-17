@@ -5,6 +5,7 @@ import CinemaBooking from "./Views/Reservation";
 import MoviePreviewPage from "./Views/Preview";
 import Login from "./Views/Login";
 import CinemaTicketCard from "./Views/card";
+import StreamPage from "./Views/Stream";
 const router = createBrowserRouter([
   {
     path: "/cin",
@@ -20,15 +21,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/film/:id/sessions",
-    element: <MoviePreviewPage/>,
+    element: <MoviePreviewPage />,
   },
   {
     path: "/login",
-    element: <Login/>,
+    element: <Login />,
   },
   {
     path: "/card",
-    element: <CinemaTicketCard/>,
+    element: <CinemaTicketCard />,
+  },
+  {
+    path: "/stream",
+    element: <StreamPage />,
   },
 ]);
 export default router;
