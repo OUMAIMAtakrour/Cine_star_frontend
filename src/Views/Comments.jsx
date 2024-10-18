@@ -50,7 +50,7 @@ const MoviePreviewPage = () => {
 
     const fetchComments = async () => {
       try {
-        const response = await axiosClient.get(`/comment`); 
+        const response = await axiosClient.get(`/comment/${movieId}/comments`); 
         setComments(response.data);
       } catch (err) {
         setError(`Error fetching comments: ${err.message}`);
