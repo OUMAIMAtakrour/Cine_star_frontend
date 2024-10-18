@@ -6,6 +6,7 @@ import MoviePreviewPage from "./Views/Preview";
 import Login from "./Views/Login";
 import CinemaTicketCard from "./Views/card";
 import StreamPage from "./Views/Stream";
+import CommentForm from "./Views/Comments";
 const router = createBrowserRouter([
   {
     path: "/cin",
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/stream",
     element: <StreamPage />,
+  },
+  {
+    path: "/comment",
+    element: <CommentForm />,
   },
 ]);
 export default router;

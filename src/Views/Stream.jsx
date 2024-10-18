@@ -24,7 +24,7 @@ const StreamPage = () => {
           />
           <span className="font-bold">Vikings Squads</span>
         </div>
-        <nav className="hidden md:flex space-x-4">
+        <nav className="hidden md:flex space-x-4 pt-10">
           <a href="#" className="hover:text-teal-300">
             Home
           </a>
@@ -58,7 +58,7 @@ const StreamPage = () => {
       <main>
         <div className="container mx-auto">
           <div className="flex items-baseline gap-6 justify-between">
-            <div>
+            <div className="w-full pr-6">
               <h1 className="text-8xl pt-20 font-bold mb-4">Vikings History</h1>
               <p className="mb-4 par">
                 On this page you will find popular products related to the
@@ -79,9 +79,20 @@ const StreamPage = () => {
               </div>
             </div>
 
-            <div>
-              <div className=" p-4 rounded-lg mb-8  custom-blur w-1/2">
-                <h2 className="text-2xl font-bold mb-2">Art of Tower</h2>
+            <div className="ml-20 h-96 mt-8">
+                
+              <div
+                className="rounded-lg mb-8  custom-blur w-1/2 h-96 p-5 content-end"
+                style={{
+                  backgroundImage:
+                    'url("https://th.bing.com/th/id/R.dc4b64f873f3824593dcaf1261145232?rik=iNyUfPvjR86m4Q&riu=http%3a%2f%2fhdqwalls.com%2fwallpapers%2fvikings-ragnar-4k-92.jpg&ehk=%2bk8I7kVYz43CeVOsxLpHLJQWUtr5vSq9ukClANJv4hU%3d&risl=&pid=ImgRaw&r=0")',
+
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ><div className="layer bg-blue-gray-300">
+                <h2 className="text-2xl font-bold mb-2 ">Art of Tower</h2>
                 <p className="mb-2">
                   The series is not strictly historical and is based on the
                   Scandinavian sagas about the attacks of the Vikings...
@@ -93,13 +104,14 @@ const StreamPage = () => {
                   </a>
                 </div>
               </div>
+              </div>
             </div>
           </div>
 
           <h2 className="text-2xl font-bold mb-4 ml-5">RELATED MOVIES :</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {["VIKINGS SQUAD", "VIKINGS RESIVERS", "VIKINGS MEMORYS"].map(
-              (title, index) => (
+              (description, index) => (
                 <div
                   key={index}
                   className="bg-teal-700 p-4 rounded-lg custom-blur flex items-center"
@@ -111,17 +123,18 @@ const StreamPage = () => {
                     className="mr-4 rounded-lg"
                   />
                   <div>
-                    <h3 className="text-xl font-bold mb-2 ha">{title}</h3>
-                    {/* <div className="flex items-center mt-50">
-                      <span className="mr-2">Assessment:</span>
-                      <div className="bg-gray-200 w-24 h-2 rounded">
+                    <h3 className="text-xl font-bold mb-2 ha ">{description}</h3>
+                    <div className="flex items-center mt-50 mx-2">
+                    description ofa movie somehow it makes sense
+                    <span className="mr-2"></span>
+                      {/* <div className="bg-gray-200 w-24 h-2 rounded">
                         <div
                           className="bg-teal-400 h-2 rounded"
                           style={{ width: `${[50, 90, 70][index]}%` }}
                         ></div>
                       </div>
-                      <span className="ml-2">{[5, 9, 7][index]}/10</span>
-                    </div> */}
+                      <span className="ml-2">{[5, 9, 7][index]}/10</span> */}
+                    </div>
                   </div>
                 </div>
               )

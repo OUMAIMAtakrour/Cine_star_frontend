@@ -129,7 +129,7 @@ const StreamingApp = () => {
           <CardHeader floated={false} className="h-64 relative">
             <img
               src={
-                `http://localhost:8080/${movie?.image_path }`
+                `http://localhost:8080/uploads/${movie?.image_path }`
               }
               alt={movie.name}
               className="w-full h-full object-cover"

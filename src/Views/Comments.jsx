@@ -2,46 +2,44 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Clock } from "lucide-react";
 import axiosClient from "../helpers/axios";
-import CommentForm from "./Comments";
-import CommentList from "./commentList";
 
-const Button = ({
-  children,
-  variant = "default",
-  className = "",
-  ...props
-}) => {
-  const baseStyles =
-    "inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-colors";
 
-  const variants = {
-    default: "bg-white text-gray-900 hover:bg-gray-100",
-    primary: "bg-red-600 text-white hover:bg-red-700",
-    outline: "border border-white text-white hover:bg-white/10",
+
+
+
+
+const Button = ({ children, variant = "default", className = "", ...props }) => {
+    const baseStyles =
+      "inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-colors";
+  
+    const variants = {
+      default: "bg-white text-gray-900 hover:bg-gray-100",
+      primary: "bg-red-600 text-white hover:bg-red-700",
+      outline: "border border-white text-white hover:bg-white/10",
+    };
+  
+    return (
+      <button
+        className={`${baseStyles} ${variants[variant]} ${className}`}
+        {...props}
+      >
+        {children}
+      </button>
+    );
   };
-
-  return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${className}`}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
-
 const MoviePreviewPage = () => {
-  const { id } = useParams();
+  const { id: movieId } = useParams(); 
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
+  const [comments, setComments] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState(""); 
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
       try {
-        const response = await axiosClient.get(`/film/${id}/sessions`);
+        const response = await axiosClient.get(`/film/${movieId}/sessions`);
         setMovie(response.data);
         setLoading(false);
       } catch (err) {
@@ -50,24 +48,57 @@ const MoviePreviewPage = () => {
       }
     };
 
+    const fetchComments = async () => {
+      try {
+        const response = await axiosClient.get(`/comment`); 
+        setComments(response.data);
+      } catch (err) {
+        setError(`Error fetching comments: ${err.message}`);
+      }
+    };
+
     fetchMovieDetail();
-  }, [id]);
+    fetchComments(); 
+  }, [movieId]);
 
   const handleSessionSelect = (session) => {
-    navigate(`/reservation/${session._id}`, { 
-      state: { 
+    navigate(`/reservation/${session._id}`, {
+      state: {
         movieName: movie.name,
         movieDuration: movie.duration,
         sessionTime: session.hour,
         sessionDate: session.date,
-        roomName: session.room.name
-      } 
+        roomName: session.room.name,
+      },
     });
+  };
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    
+    const userId = localStorage.getItem("TOKEN");
+
+    if (!userId) {
+      setError("User not logged in.");
+      return;
+    }
+
+    try {
+      const response = await axiosClient.post(`/comment/create`, {
+        content: newComment,
+        movieId: movieId, 
+        userId: userId,
+      });
+      setComments([...comments, response.data]); 
+      setNewComment("");
+    } catch (err) {
+      setError(`Error posting comment: ${err.message}`);
+    }
   };
 
   const groupSessionsByDate = () => {
     if (!movie || !movie.sessions) return {};
-    
+
     return movie.sessions.reduce((acc, session) => {
       const date = new Date(session.date).toLocaleDateString();
       if (!acc[date]) {
@@ -76,10 +107,6 @@ const MoviePreviewPage = () => {
       acc[date].push(session);
       return acc;
     }, {});
-  };
-
-  const handleAddComment = (newComment) => {
-    setComments([...comments, newComment]);
   };
 
   if (loading)
@@ -100,7 +127,7 @@ const MoviePreviewPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <div className="relative h-[70vh]">
+      {/* <div className="relative h-[70vh]">
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
         <img
           src={`/api/placeholder/1200/800?text=${movie.name}`}
@@ -119,9 +146,9 @@ const MoviePreviewPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <div className="max-w-6xl mx-auto px-8 py-12">
+      {/* <div className="max-w-6xl mx-auto px-8 py-12">
         <h2 className="text-2xl font-bold mb-6">Available Sessions</h2>
 
         {Object.keys(groupedSessions).length === 0 ? (
@@ -149,11 +176,39 @@ const MoviePreviewPage = () => {
             </div>
           ))
         )}
-      </div>
+      </div> */}
 
-      <div className="max-w-6xl mx-auto px-8 py-12">
-        <CommentForm onAddComment={handleAddComment} />
-        <CommentList comments={comments} />
+      {/* Comments Section */}
+      <div className="max-w-6xl mx-auto px-8 py-8">
+        <h2 className="text-2xl font-bold mb-6">Comments</h2>
+        <ul className="space-y-4">
+          {comments.map((comment, index) => (
+            <li key={index} className="bg-gray-800 p-4 rounded-md">
+              {comment.content}
+            </li>
+          ))}
+        </ul>
+
+        <form
+          onSubmit={handleCommentSubmit}
+          className="mt-8 bg-gray-800 p-4 rounded-md"
+        >
+          <textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            className="w-full p-2 bg-gray-700 text-white rounded-md"
+            placeholder="Leave a comment..."
+            rows="4"
+            required
+          />
+          <Button
+            variant="primary"
+            type="submit"
+            className="mt-4 w-full justify-center"
+          >
+            Submit Comment
+          </Button>
+        </form>
       </div>
     </div>
   );
