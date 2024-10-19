@@ -5,8 +5,6 @@ import axiosClient from "../helpers/axios";
 import CommentForm from "./Comments";
 import Button from "../components/Buttons/SubmitButton";
 
-
-
 const MoviePreviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -31,20 +29,20 @@ const MoviePreviewPage = () => {
   }, [id]);
 
   const handleSessionSelect = (session) => {
-    navigate(`/reservation/${session._id}`, { 
-      state: { 
+    navigate(`/reservation/${session._id}`, {
+      state: {
         movieName: movie.name,
         movieDuration: movie.duration,
         sessionTime: session.hour,
         sessionDate: session.date,
-        roomName: session.room.name
-      } 
+        roomName: session.room.name,
+      },
     });
   };
 
   const groupSessionsByDate = () => {
     if (!movie || !movie.sessions) return {};
-    
+
     return movie.sessions.reduce((acc, session) => {
       const date = new Date(session.date).toLocaleDateString();
       if (!acc[date]) {
