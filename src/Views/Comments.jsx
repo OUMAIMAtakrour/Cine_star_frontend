@@ -178,7 +178,6 @@ const MoviePreviewPage = () => {
         )}
       </div> */}
 
-      {/* Comments Section */}
       <div className="max-w-6xl mx-auto px-8 py-8">
         <h2 className="text-2xl font-bold mb-6">Comments</h2>
         <ul className="space-y-4">

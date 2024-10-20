@@ -9,6 +9,7 @@ const MoviePreviewPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
+  const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
@@ -16,7 +17,7 @@ const MoviePreviewPage = () => {
   useEffect(() => {
     const fetchMovieDetail = async () => {
       try {
-        const response = await axiosClient.get(`/film/${id}/sessions`);
+        const response = await axiosClient.get(`/film/${id}`);
         setMovie(response.data);
         setLoading(false);
       } catch (err) {
@@ -31,6 +32,7 @@ const MoviePreviewPage = () => {
   const handleSessionSelect = (session) => {
     navigate(`/reservation/${session._id}`, {
       state: {
+        movieImage: movie.image,
         movieName: movie.name,
         movieDuration: movie.duration,
         sessionTime: session.hour,
@@ -57,6 +59,13 @@ const MoviePreviewPage = () => {
     setComments([...comments, newComment]);
   };
 
+  const imageUrl = movie?.image || movie?.imageUrl;
+  const placeholderImage = '/path/to/placeholder-image.jpg'; // Update this path
+
+  if (loading) return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">Loading...</div>;
+  if (error) return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-red-500">{error}</div>;
+  if (!movie) return null;
+
   if (loading)
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">
@@ -78,9 +87,13 @@ const MoviePreviewPage = () => {
       <div className="relative h-[70vh]">
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
         <img
-          src={`/api/placeholder/1200/800?text=${movie.name}`}
+          src={!imageError ? imageUrl : placeholderImage}
           alt={movie.name}
           className="w-full h-full object-cover"
+          onError={(e) => {
+            console.error("Error loading image:", imageUrl);
+            setImageError(true);
+          }}
         />
 
         <div className="absolute bottom-0 left-0 right-0 p-8">

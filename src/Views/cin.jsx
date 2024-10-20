@@ -39,7 +39,7 @@ const StreamingApp = () => {
         throw new Error("Authentication required");
       }
   
-      const response = await axiosClient.get("/film", { timeout: 10000 });
+      const response = await axiosClient.get("/film/all", { timeout: 10000 });
   
       if (!response.data) {
         throw new Error("No data received from server");
@@ -189,7 +189,6 @@ const StreamingApp = () => {
           </div>
         </div>
 
-        {/* Category Filter */}
         <div className="flex justify-center space-x-4 mb-6">
           {categories.map((category) => (
             <button

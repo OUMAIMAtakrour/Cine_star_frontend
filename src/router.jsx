@@ -8,6 +8,7 @@ import CinemaTicketCard from "./Views/card";
 import StreamPage from "./Views/Stream";
 import CommentForm from "./Views/Comments";
 import CinemaAdminDashboard from "./Views/dashboard";
+import ErrorPage from "./Views/404";
 const router = createBrowserRouter([
   {
     path: "/cin",
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <CinemaAdminDashboard />,
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ]);
 export default router;

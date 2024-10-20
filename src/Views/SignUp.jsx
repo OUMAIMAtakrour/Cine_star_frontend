@@ -49,13 +49,13 @@ function Signup({ onSignupSuccess }) {
   };
 
   return (
-    <div className="h-screen md:flex py-16 px-20 rounded-lg">
-      <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-br from-blue-400 to-green-400 justify-around items-center hidden rounded-l-2xl">
+    <div className="h-screen md:flex  rounded-lg">
+      <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-br from-blue-900 to-blue-200 justify-around items-center hidden ">
         <div>
           <h1 className="text-white font-bold text-4xl font-sans">
-            Your Health
+            CINE STAR
           </h1>
-          <p className="text-white mt-1">Is Our Treasure</p>
+          <p className="text-white mt-1">TAKE A PEAK</p>
         </div>
         <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
         <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
@@ -191,15 +191,16 @@ function Signup({ onSignupSuccess }) {
             {isLoading ? "Signing up..." : "Sign Up"}
           </button>
 
-          <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
-            Already have an account?{" "}
+         
             <Link
               to="/login"
               className="leading-loose text-xs text-center text-black font-semibold hover:text-blue-700"
             >
+               <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
+               Already have an account?{" "}
+          </span>
               Login
             </Link>
-          </span>
         </form>
       </div>
     </div>

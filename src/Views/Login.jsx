@@ -45,13 +45,13 @@ function Login({ onLoginSuccess }) {
   };
 
   return (
-    <div className="h-screen md:flex py-16 px-20 rounded-lg">
-      <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-br from-blue-400 to-green-400 justify-around items-center hidden rounded-l-2xl">
+    <div className="h-screen md:flex ">
+      <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-br  from-blue-900 to-blue-200 justify-around items-center hidden ">
         <div>
           <h1 className="text-white font-bold text-4xl font-sans">
             Welcome Back
           </h1>
-          <p className="text-white mt-1">To Your Health Portal</p>
+          <p className="text-white mt-1">To Your Epic World</p>
         </div>
         <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
         <div className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
@@ -141,15 +141,16 @@ function Login({ onLoginSuccess }) {
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
 
-          <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
-            Don't have an account?{" "}
+          
             <Link
               to="/register"
               className="leading-loose text-xs text-center text-black font-semibold hover:text-blue-700"
             >
-              Sign Up
-            </Link>
+              <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
+              Don't have an account?{" "}
           </span>
+          Sign Up
+            </Link>
         </form>
       </div>
     </div>
