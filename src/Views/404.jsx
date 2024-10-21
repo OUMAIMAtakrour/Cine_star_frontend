@@ -1,40 +1,26 @@
-import { Link, useRouteError } from "react-router-dom";
+import React from 'react';
+import { Film, Home } from 'lucide-react';
 
-export default function ErrorPage() {
-  const error = useRouteError();
-  console.error(error);
-
+const NotFoundPage = () => {
   return (
-    <>
-      <div className="flex items-center justify-center w-screen h-screen">
-        <div className="px-4 lg:py-12">
-          <div className="lg:gap-4 lg:flex">
-            <div className="flex flex-col items-center justify-center md:py-24 lg:py-32">
-              <h1 className="font-bold text-blue-600 text-9xl">404</h1>
-              <p className="mb-2 text-2xl font-bold text-center text-gray-800 md:text-3xl">
-                <span className="text-red-500">Oops!</span> Page{" "}
-               
-              </p>
-              <p className="mb-8 text-center text-gray-500 md:text-lg">
-                The page you’re looking for doesn’t exist.
-              </p>
-              <Link
-                to="/login"
-                className="px-5 py-2 rounded-md text-blue-100 bg-blue-600 hover:bg-blue-700"
-              >
-                Go home
-              </Link>
-            </div>
-            <div className="mt-4">
-              {/* <img
-                src="https://cdn.pixabay.com/photo/2016/11/22/23/13/black-dog-1851106__340.jpg"
-                alt="img"
-                className="object-cover w-full h-full"
-              /> */}
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-6xl font-bold mb-4">404</h1>
+        <div className="text-4xl mb-8">Oops! This scene is missing.</div>
+        <Film className="mx-auto mb-8" size={120} />
+        <p className="text-xl mb-8">
+          Looks like the movie you're looking for is not in our collection.
+        </p>
+        <a
+          href="/login"
+          className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-200 transition-colors duration-300"
+        >
+          <Home className="mr-2" size={20} />
+          Back to Home
+        </a>
       </div>
-    </>
+    </div>
   );
-}
+};
+
+export default NotFoundPage;

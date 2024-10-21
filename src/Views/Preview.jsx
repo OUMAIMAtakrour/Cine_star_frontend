@@ -32,6 +32,7 @@ const MoviePreviewPage = () => {
   const handleSessionSelect = (session) => {
     navigate(`/reservation/${session._id}`, {
       state: {
+        movieVideo: movie.video,
         movieImage: movie.image,
         movieName: movie.name,
         movieDuration: movie.duration,
@@ -60,10 +61,20 @@ const MoviePreviewPage = () => {
   };
 
   const imageUrl = movie?.image || movie?.imageUrl;
-  const placeholderImage = '/path/to/placeholder-image.jpg'; // Update this path
+  const placeholderImage = "/path/to/placeholder-image.jpg";
 
-  if (loading) return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">Loading...</div>;
-  if (error) return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-red-500">{error}</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">
+        Loading...
+      </div>
+    );
+  if (error)
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
   if (!movie) return null;
 
   if (loading)
@@ -86,16 +97,10 @@ const MoviePreviewPage = () => {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="relative h-[70vh]">
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
-        <img
-          src={!imageError ? imageUrl : placeholderImage}
-          alt={movie.name}
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            console.error("Error loading image:", imageUrl);
-            setImageError(true);
-          }}
-        />
-
+        <video controls className="object-cover w-full">
+          <source src={`${movie?.video}`} type="video/mp4" />
+        </video>
+        
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="max-w-6xl mx-auto">
             <h1 className="text-5xl font-bold mb-4">{movie.name}</h1>

@@ -8,7 +8,7 @@ import CinemaTicketCard from "./Views/card";
 import StreamPage from "./Views/Stream";
 import CommentForm from "./Views/Comments";
 import CinemaAdminDashboard from "./Views/dashboard";
-import ErrorPage from "./Views/404";
+import NotFoundPage from "./Views/404";
 const router = createBrowserRouter([
   {
     path: "/cin",
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <ErrorPage />,
+    element: <NotFoundPage />,
   },
 ]);
 export default router;

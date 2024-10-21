@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import HomeHeader from "../components/Navbar/homeHeader";
 import axiosClient from "../helpers/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ("../assets/css/test.css")
+import("../assets/css/test.css");
 import {
   faTwitter,
   faFacebook,
@@ -19,7 +19,7 @@ import {
 
 const StreamingApp = () => {
   const [movies, setMovies] = useState([]);
-  
+
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,37 +27,45 @@ const StreamingApp = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const navigate = useNavigate();
 
-  const categories = ["All", "Horror", "Fantasy", "Action", "Romance", "Animation", "Sci-fi"];
+  const categories = [
+    "All",
+    "Horror",
+    "Fantasy",
+    "Action",
+    "Romance",
+    "Animation",
+    "Sci-fi",
+  ];
 
   const fetchMovies = async () => {
     try {
       setLoading(true);
       setError(null);
-  
+
       const token = localStorage.getItem("TOKEN");
       if (!token) {
         throw new Error("Authentication required");
       }
-  
+
       const response = await axiosClient.get("/film/all", { timeout: 10000 });
-  
+
       if (!response.data) {
         throw new Error("No data received from server");
       }
-  
+
       console.log("Full Response:", response.data);
-  
+
       setMovies(response.data);
       setLoading(false);
     } catch (err) {
       console.error("Movie fetch error:", err);
-  
+
       if (err.response?.status === 401) {
         setError("Please login to view movies");
         navigate("/login");
         return;
       }
-  
+
       if (err.code === "ECONNABORTED") {
         setError("Request timed out. Please check your connection.");
       } else if (!navigator.onLine) {
@@ -65,11 +73,10 @@ const StreamingApp = () => {
       } else {
         setError(`Failed to fetch movies: ${err.message}`);
       }
-  
+
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchMovies();
@@ -128,9 +135,7 @@ const StreamingApp = () => {
         >
           <CardHeader floated={false} className="h-64 relative">
             <img
-              src={
-                `http://localhost:8080/uploads/${movie?.image_path }`
-              }
+              src={`${movie?.image}`}
               alt={movie.name}
               className="w-full h-full object-cover"
               onError={(e) => {
@@ -140,6 +145,7 @@ const StreamingApp = () => {
                 )}`;
               }}
             />
+           
             <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-opacity duration-300"></div>
           </CardHeader>
           <CardBody className="text-center">
@@ -231,7 +237,6 @@ const StreamingApp = () => {
           </div>
           <p className="text-sm text-gray-600">©All rights reserved</p>
         </div>
-       
 
         <div className="flex space-x-4">
           <a
