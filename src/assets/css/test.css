@@ -1,21 +1,21 @@
 /* StreamingPlatform.css */
 .body {
-    background: rgb(84, 127, 190);
-    background: linear-gradient(143deg, rgb(146, 175, 219) 0%, rgb(63, 80, 109) 100%);
+    background: rgb(0, 0, 0);
+    /* background: linear-gradient(143deg, rgb(146, 175, 219) 0%, rgb(63, 80, 109) 100%); */
    
     /* font-family: Arial, sans-serif; */
   }
 
 
-  .glass{
-    /* From https://css.glass */
-    background: rgba(255, 255, 255, 0.18);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(4.6px);
-    -webkit-backdrop-filter: blur(4.6px);
-    /* border: 1px solid rgba(255, 255, 255, 0.5); */
-    }
+.glass{
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4.6px);
+  -webkit-backdrop-filter: blur(4.6px);
+  /* border: 1px solid rgba(255, 255, 255, 0.5); */
+  }
   /* From Uiverse.io by Bodyhc */ 
 .search {
   display: inline-block;
@@ -35,8 +35,8 @@
   border: none;
   color: #fff;
   cursor: pointer;
-  padding: 8px 20px;
-  border-radius: 20px;
+  padding: 12px 26px;
+  /* border-radius: 20px; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: absolute;
   top: 0;
@@ -47,5 +47,9 @@
 .search button[type="submit"]:hover {
   transform: scale(1.1);
   color: rgb(255, 255, 255);
-  background-color: rgb(130, 168, 194);
+  background-color: rgb(38, 35, 243);
 }
+
+
+  /* From https://css.glass */
+

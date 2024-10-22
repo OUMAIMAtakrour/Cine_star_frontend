@@ -154,7 +154,7 @@ const StreamingApp = () => {
   );
 
   return (
-    <div className="min-h-screen body bg-blue-gray-500 p-6">
+    <div className="min-h-screen body bg-blue-gray-500 pt-6">
       <div className="glass mx-4 pb-4">
         <div className="pt-5 mx-10">
           <HomeHeader />
@@ -199,9 +199,9 @@ const StreamingApp = () => {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full transition-colors duration-300 ${
+                className={`px-6 py-2 rounded-full transition-colors duration-300 ${
                   selectedCategory === category
-                    ? "bg-blue-500 text-white"
+                    ? "bg-blue-700 text-white"
                     : "bg-white/20 text-white hover:bg-white/40 border border-white"
                 }`}
               >
@@ -232,7 +232,7 @@ const StreamingApp = () => {
         </div>
       </div>
 
-      <footer className="rounded-t-2xl grid grid-cols-3 bg-gradient-to-br from-[#7990B3] to-white backdrop-blur-sm py-20 mt-20">
+      <footer className="rounded-t-2xl grid grid-cols-3 bg-gradient-to-br from-[#494949] to-white backdrop-blur-sm py-20 mt-20">
         <div className="flex items-center pl-8">
           <img src="/src/assets/img/image 6.svg" alt="Logo" className="mr-2" />
           <p className="font-bold text-xl mr-4">CINE.STAR</p>

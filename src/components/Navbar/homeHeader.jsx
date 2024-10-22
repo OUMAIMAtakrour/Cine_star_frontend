@@ -10,8 +10,8 @@ function HomeHeader(props) {
 
 
         <div className="search ">
-  <input placeholder="Search..." type="text"className='rounded-3xl px-20 py-2 w-full border-none shadow-lg' />
-  <button type="submit">Go</button>
+  <input placeholder="Search..." type="text"className='rounded-3xl px-20 py-3 w-full border-none shadow-lg' />
+  <button type="submit" className='rounded-3xl'>Go</button>
 </div>
 
 

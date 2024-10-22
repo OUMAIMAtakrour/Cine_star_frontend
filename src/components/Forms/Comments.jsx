@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../../helpers/axios";
 import Button from "../Buttons/SubmitButton";
 
-
 const MoviePreviewPage = () => {
   const { id: movieId } = useParams();
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ const MoviePreviewPage = () => {
         if (Array.isArray(response.data)) {
           setComments(response.data);
         } else {
-          setComments([]); 
+          setComments([]);
         }
       } catch (err) {
         setError(`Error fetching comments: ${err.message}`);
