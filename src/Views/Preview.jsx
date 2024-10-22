@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Clock } from "lucide-react";
 import axiosClient from "../helpers/axios";
-import CommentForm from "./Comments";
+import CommentForm from "../components/Forms/Comments";
 import Button from "../components/Buttons/SubmitButton";
 
 const MoviePreviewPage = () => {
@@ -97,13 +97,23 @@ const MoviePreviewPage = () => {
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="relative h-[70vh]">
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
-        <video controls className="object-cover w-full">
+        <img
+          src={movie.image}
+          alt={movie.name}
+          className="w-full h-full object-cover "
+          onError={(e) => {
+            console.error("Error loading image:", imageUrl);
+            setImageError(true);
+          }}
+        />
+
+        <video controls className=" w-1/3 mx-auto">
           <source src={`${movie?.video}`} type="video/mp4" />
         </video>
-        
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="max-w-6xl mx-auto">
             <h1 className="text-5xl font-bold mb-4">{movie.name}</h1>
+
             <div className="flex items-center gap-6 mb-4">
               <div className="flex items-center">
                 <Clock className="w-5 h-5 mr-2" />

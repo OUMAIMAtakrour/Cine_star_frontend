@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axiosClient from "../helpers/axios";
-import "../assets/css/test.css";
+import axiosClient from "../../helpers/axios";
+import "../../assets/css/test.css";
+
 
 function Signup({ onSignupSuccess }) {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function Signup({ onSignupSuccess }) {
     role: "",
     password: "",
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -31,13 +32,13 @@ function Signup({ onSignupSuccess }) {
 
     try {
       const response = await axiosClient.post("/auth/register", formData);
-       
+
       localStorage.setItem("TOKEN", response.data.token);
-      
+
       if (onSignupSuccess) {
         onSignupSuccess(response.data);
       }
-      
+
       navigate("/login");
     } catch (err) {
       setError(
@@ -52,9 +53,7 @@ function Signup({ onSignupSuccess }) {
     <div className="h-screen md:flex  rounded-lg">
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-br from-blue-900 to-blue-200 justify-around items-center hidden ">
         <div>
-          <h1 className="text-white font-bold text-4xl font-sans">
-            CINE STAR
-          </h1>
+          <h1 className="text-white font-bold text-4xl font-sans">CINE STAR</h1>
           <p className="text-white mt-1">TAKE A PEAK</p>
         </div>
         <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8" />
@@ -156,7 +155,7 @@ function Signup({ onSignupSuccess }) {
               <option value="admin">Admin</option>
             </select>
           </div>
-          
+
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -191,16 +190,15 @@ function Signup({ onSignupSuccess }) {
             {isLoading ? "Signing up..." : "Sign Up"}
           </button>
 
-         
-            <Link
-              to="/login"
-              className="leading-loose text-xs text-center text-black font-semibold hover:text-blue-700"
-            >
-               <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
-               Already have an account?{" "}
-          </span>
-              Login
-            </Link>
+          <Link
+            to="/login"
+            className="leading-loose text-xs text-center text-black font-semibold hover:text-blue-700"
+          >
+            <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
+              Already have an account?{" "}
+            </span>
+            Login
+          </Link>
         </form>
       </div>
     </div>

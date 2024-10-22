@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axiosClient from "../helpers/axios";
-import "../assets/css/test.css";
+import axiosClient from "../../helpers/axios";
+import "../../assets/css/test.css";
 
 function Login({ onLoginSuccess }) {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -16,9 +16,9 @@ function Login({ onLoginSuccess }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -28,17 +28,20 @@ function Login({ onLoginSuccess }) {
     setError("");
 
     try {
-      const response = await axiosClient.post('/auth/login', formData);
-      
-      localStorage.setItem('TOKEN', response.data.token);
-      
+      const response = await axiosClient.post("/auth/login", formData);
+
+      localStorage.setItem("TOKEN", response.data.token);
+
       if (onLoginSuccess) {
         onLoginSuccess(response.data);
       }
 
-      navigate(response.data.user.role === 'client' ? '/cin' : '/dashboard');
+      navigate(response.data.user.role === "client" ? "/cin" : "/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Please check your credentials.");
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your credentials."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -64,10 +67,15 @@ function Login({ onLoginSuccess }) {
           <h1 className="text-gray-800 font-bold text-2xl mb-1">
             Welcome Back!
           </h1>
-          <p className="text-sm font-normal text-gray-600 mb-7">Please login to continue</p>
+          <p className="text-sm font-normal text-gray-600 mb-7">
+            Please login to continue
+          </p>
 
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <div
+              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+              role="alert"
+            >
               <span className="block sm:inline">{error}</span>
             </div>
           )}
@@ -135,22 +143,21 @@ function Login({ onLoginSuccess }) {
             type="submit"
             disabled={isLoading}
             className={`block w-full bg-blue-400 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 ${
-              isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-500'
+              isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-500"
             }`}
           >
-            {isLoading ? 'Logging in...' : 'Login'}
+            {isLoading ? "Logging in..." : "Login"}
           </button>
 
-          
-            <Link
-              to="/register"
-              className="leading-loose text-xs text-center text-black font-semibold hover:text-blue-700"
-            >
-              <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
+          <Link
+            to="/register"
+            className="leading-loose text-xs text-center text-black font-semibold hover:text-blue-700"
+          >
+            <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
               Don't have an account?{" "}
-          </span>
-          Sign Up
-            </Link>
+            </span>
+            Sign Up
+          </Link>
         </form>
       </div>
     </div>

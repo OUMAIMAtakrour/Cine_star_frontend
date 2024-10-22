@@ -1,12 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import StreamingPlatform from "./Views/cin";
-import Signup from "./Views/SignUp";
+import Signup from "./Views/Auth/SignUp";
 import CinemaBooking from "./Views/Reservation";
 import MoviePreviewPage from "./Views/Preview";
-import Login from "./Views/Login";
-import CinemaTicketCard from "./Views/card";
+import Login from "./Views/Auth/Login";
 import StreamPage from "./Views/Stream";
-import CommentForm from "./Views/Comments";
+import CommentForm from "./components/Forms/Comments";
 import CinemaAdminDashboard from "./Views/dashboard";
 import NotFoundPage from "./Views/404";
 const router = createBrowserRouter([
@@ -30,10 +29,7 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
-  {
-    path: "/card",
-    element: <CinemaTicketCard />,
-  },
+
   {
     path: "/stream",
     element: <StreamPage />,

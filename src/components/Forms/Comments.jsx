@@ -1,40 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Clock } from "lucide-react";
-import axiosClient from "../helpers/axios";
+import axiosClient from "../../helpers/axios";
 
+const Button = ({
+  children,
+  variant = "default",
+  className = "",
+  ...props
+}) => {
+  const baseStyles =
+    "inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-colors";
 
-
-
-
-
-const Button = ({ children, variant = "default", className = "", ...props }) => {
-    const baseStyles =
-      "inline-flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium transition-colors";
-  
-    const variants = {
-      default: "bg-white text-gray-900 hover:bg-gray-100",
-      primary: "bg-red-600 text-white hover:bg-red-700",
-      outline: "border border-white text-white hover:bg-white/10",
-    };
-  
-    return (
-      <button
-        className={`${baseStyles} ${variants[variant]} ${className}`}
-        {...props}
-      >
-        {children}
-      </button>
-    );
+  const variants = {
+    default: "bg-white text-gray-900 hover:bg-gray-100",
+    primary: "bg-red-600 text-white hover:bg-red-700",
+    outline: "border border-white text-white hover:bg-white/10",
   };
+
+  return (
+    <button
+      className={`${baseStyles} ${variants[variant]} ${className}`}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
 const MoviePreviewPage = () => {
-  const { id: movieId } = useParams(); 
+  const { id: movieId } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
-  const [comments, setComments] = useState([]); 
+  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [newComment, setNewComment] = useState(""); 
+  const [newComment, setNewComment] = useState("");
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
@@ -50,15 +49,21 @@ const MoviePreviewPage = () => {
 
     const fetchComments = async () => {
       try {
-        const response = await axiosClient.get(`/comment/${movieId}/comments`); 
-        setComments(response.data);
+        const response = await axiosClient.get(`/comment/${movieId}/comments`);
+
+        // Check if the response is an empty array or contains comments
+        if (Array.isArray(response.data)) {
+          setComments(response.data); // Set comments (empty array or comments list)
+        } else {
+          setComments([]); // Set to an empty array if no comments are found
+        }
       } catch (err) {
         setError(`Error fetching comments: ${err.message}`);
       }
     };
 
     fetchMovieDetail();
-    fetchComments(); 
+    fetchComments();
   }, [movieId]);
 
   const handleSessionSelect = (session) => {
@@ -75,7 +80,7 @@ const MoviePreviewPage = () => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    
+
     const userId = localStorage.getItem("TOKEN");
 
     if (!userId) {
@@ -86,10 +91,10 @@ const MoviePreviewPage = () => {
     try {
       const response = await axiosClient.post(`/comment/create`, {
         content: newComment,
-        movieId: movieId, 
+        movieId: movieId,
         userId: userId,
       });
-      setComments([...comments, response.data]); 
+      setComments([...comments, response.data]);
       setNewComment("");
     } catch (err) {
       setError(`Error posting comment: ${err.message}`);
@@ -180,10 +185,11 @@ const MoviePreviewPage = () => {
 
       <div className="max-w-6xl mx-auto px-8 py-8">
         <h2 className="text-2xl font-bold mb-6">Comments</h2>
+        {/* {comments.length === 0 ? ( */}
         <ul className="space-y-4">
           {comments.map((comment, index) => (
             <li key={index} className="bg-gray-800 p-4 rounded-md">
-              {comment.content}
+              <div className="w-full break-words">{comment.content}</div>
             </li>
           ))}
         </ul>
