@@ -7,9 +7,7 @@
   padding: 0px;
   box-sizing: border-box;
 }
-body{
-  background-color: rgb(59, 59, 59);
-}
+
 .body {
   background: rgb(84, 127, 190);
   background: linear-gradient(143deg, rgb(146, 175, 219) 0%, rgb(63, 80, 109) 100%);
@@ -36,3 +34,6 @@ body{
     -webkit-backdrop-filter: blur(5px);
     /* border: 1px solid rgba(144, 170, 221, 0.3); */
   }
+
+
+  

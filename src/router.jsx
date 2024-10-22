@@ -8,6 +8,7 @@ import StreamPage from "./Views/Stream";
 import CommentForm from "./components/Forms/Comments";
 import CinemaAdminDashboard from "./Views/dashboard";
 import NotFoundPage from "./Views/404";
+import StarRating from "./components/rating";
 const router = createBrowserRouter([
   {
     path: "/cin",
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <NotFoundPage />,
+  },
+  {
+    path: "/star",
+    element: <StarRating />,
   },
 ]);
 export default router;

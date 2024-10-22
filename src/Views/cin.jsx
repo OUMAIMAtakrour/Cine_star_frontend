@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import HomeHeader from "../components/Navbar/homeHeader";
 import axiosClient from "../helpers/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import("../assets/css/test.css");
 import {
   faTwitter,
   faFacebook,
@@ -17,10 +16,54 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+const MovieCard = ({ movie, onClick }) => {
+  return (
+    <div
+      className="relative h-[400px] rounded-xl overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+      onClick={() => onClick(movie._id)}
+    >
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10">
+        <div className="absolute bottom-0 w-full p-4 text-white">
+          <h2 className="text-xl font-semibold mb-2 break-words">
+            {movie.name}
+          </h2>
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <span className="bg-white/20 px-2 py-1 rounded text-sm">
+              {movie.duration} min
+            </span>
+
+            {movie.category && (
+              <span className="text-sm text-gray-300">{movie.category}</span>
+            )}
+            <button className="bg-white/30 hover:bg-white text-white  rounded-full flex">
+              <img src="/src/assets/img/icons8-play-video-50.png" alt="" />
+            </button>
+          </div>
+          <p className="text-sm text-gray-300 line-clamp-3">
+            {movie.description || "No description available"}
+          </p>
+        </div>
+      </div>
+
+      <img
+        src={movie.image}
+        alt={movie.name}
+        className="w-full h-full object-cover"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = `/api/placeholder/400/400?text=${encodeURIComponent(
+            movie.name
+          )}`;
+        }}
+      />
+    </div>
+  );
+};
+
 const StreamingApp = () => {
   const [movies, setMovies] = useState([]);
-
   const [filteredMovies, setFilteredMovies] = useState([]);
+  const [featuredMovies, setFeaturedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
@@ -41,39 +84,37 @@ const StreamingApp = () => {
     try {
       setLoading(true);
       setError(null);
-
       const token = localStorage.getItem("TOKEN");
       if (!token) {
         throw new Error("Authentication required");
       }
-
       const response = await axiosClient.get("/film/all", { timeout: 10000 });
-
       if (!response.data) {
         throw new Error("No data received from server");
       }
 
-      console.log("Full Response:", response.data);
+      const moviesList = response.data;
+      setMovies(moviesList);
+      setFilteredMovies(moviesList);
 
-      setMovies(response.data);
+      const lastTwoMovies = moviesList.slice(-2);
+      setFeaturedMovies(lastTwoMovies);
+
       setLoading(false);
     } catch (err) {
       console.error("Movie fetch error:", err);
-
       if (err.response?.status === 401) {
         setError("Please login to view movies");
         navigate("/login");
         return;
       }
-
-      if (err.code === "ECONNABORTED") {
-        setError("Request timed out. Please check your connection.");
-      } else if (!navigator.onLine) {
-        setError("You are offline. Please check your internet connection.");
-      } else {
-        setError(`Failed to fetch movies: ${err.message}`);
-      }
-
+      setError(
+        err.code === "ECONNABORTED"
+          ? "Request timed out. Please check your connection."
+          : !navigator.onLine
+          ? "You are offline. Please check your internet connection."
+          : `Failed to fetch movies: ${err.message}`
+      );
       setLoading(false);
     }
   };
@@ -83,143 +124,115 @@ const StreamingApp = () => {
   }, [retryCount]);
 
   useEffect(() => {
-    if (selectedCategory === "All") {
-      setFilteredMovies(movies);
-    } else {
-      setFilteredMovies(
-        movies.filter((movie) => movie.category === selectedCategory)
-      );
-    }
+    setFilteredMovies(
+      selectedCategory === "All"
+        ? movies
+        : movies.filter((movie) => movie.category === selectedCategory)
+    );
   }, [movies, selectedCategory]);
-
-  const handleRetry = () => {
-    setRetryCount((prev) => prev + 1);
-  };
 
   const handleMovieClick = (movieId) => {
     navigate(`/film/${movieId}/sessions`);
   };
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-  };
-
   const LoadingState = () => (
-    <div className="flex flex-col items-center justify-center min-h-[400px]">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-      <p className="text-white mt-4">Loading movies...</p>
+    <div className="flex justify-center items-center min-h-[400px]">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
     </div>
   );
 
   const ErrorState = () => (
-    <div className="flex flex-col items-center justify-center min-h-[400px] text-white">
-      <div className="bg-red-500 bg-opacity-20 rounded-lg p-6 max-w-md">
-        <p className="text-lg mb-4">{error}</p>
-        <button
-          onClick={handleRetry}
-          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-        >
-          Try Again
-        </button>
-      </div>
-    </div>
-  );
-
-  const MovieGrid = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {filteredMovies.map((movie) => (
-        <Card
-          key={movie._id}
-          className="cursor-pointer transform transition-transform hover:scale-105"
-          onClick={() => handleMovieClick(movie._id)}
-        >
-          <CardHeader floated={false} className="h-64 relative">
-            <img
-              src={`${movie?.image}`}
-              alt={movie.name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = `/api/placeholder/400/400?text=${encodeURIComponent(
-                  movie.name
-                )}`;
-              }}
-            />
-
-            <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 transition-opacity duration-300"></div>
-          </CardHeader>
-          <CardBody className="text-center">
-            <Typography variant="h5" color="blue-gray" className="mb-2">
-              {movie.name}
-            </Typography>
-            <Typography color="gray" className="font-medium">
-              {movie.duration} min
-            </Typography>
-          </CardBody>
-        </Card>
-      ))}
+    <div className="text-center py-10">
+      <p className="text-red-500 mb-4">{error}</p>
+      <button
+        onClick={() => setRetryCount((prev) => prev + 1)}
+        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Try Again
+      </button>
     </div>
   );
 
   return (
-    <div className="body">
-      <div className="glass mx-4 min-h-screen p-6 font-sans text-white mb-16">
-        <HomeHeader />
-
-        <div className="grid grid-cols-2 gap-6 mb-8">
-          <div className="relative">
-            <img
-              src="/src/assets/img/image 2.png"
-              alt="Featured Movie"
-              className="w-full h-50 rounded-lg"
-            />
-            <div className="absolute bottom-4 left-4">
-              <h2 className="text-xl font-bold">Kubo and the Two Strings</h2>
-              <button className="mt-2 px-4 py-2 bg-black bg-opacity-50 rounded-full">
-                Play ▶️
-              </button>
-            </div>
-          </div>
-          <div className="relative">
-            <img
-              src="/src/assets/img/image 2.png"
-              alt="Featured Movie"
-              className="w-full h-50 rounded-lg"
-            />
-            <div className="absolute bottom-4 left-4">
-              <h2 className="text-xl font-bold">Gabimaru – Hell's Paradise</h2>
-              <button className="mt-2 px-4 py-2 bg-black bg-opacity-50 rounded-full">
-                Play ▶️
-              </button>
-            </div>
-          </div>
+    <div className="min-h-screen body bg-blue-gray-500 p-6">
+      <div className="glass mx-4 pb-4">
+        <div className="pt-5 mx-10">
+          <HomeHeader />
         </div>
 
-        <div className="flex justify-center space-x-4 mb-6">
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={`py-2 px-4 glass rounded-lg transition ${
-                selectedCategory === category
-                  ? "bg-blue-500 text-white"
-                  : "hover:bg-transparent"
-              }`}
-              onClick={() => handleCategoryChange(category)}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {featuredMovies.map((movie) => (
+              <div
+                key={movie._id}
+                className="relative h-[400px] rounded-xl overflow-hidden"
+              >
+                <img
+                  src={
+                    movie.image ||
+                    `/api/placeholder/800/400?text=${encodeURIComponent(
+                      movie.name
+                    )}`
+                  }
+                  alt={movie.name}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
+                  <div className="absolute bottom-0 p-6">
+                    <h2 className="text-2xl text-white font-bold mb-4">
+                      {movie.name}
+                    </h2>
+                    <button className="bg-white/30 hover:bg-white text-white flex rounded-full">
+                      <img
+                        src="/src/assets/img/icons8-play-video-50.png"
+                        alt=""
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
 
-        <div className="min-h-screen bg-gray-900 bg-opacity-50 py-12 px-4 rounded-lg">
-          <h1 className="text-3xl font-bold text-white mb-8">
+          <div className="flex flex-wrap gap-4 mb-8">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full transition-colors duration-300 ${
+                  selectedCategory === category
+                    ? "bg-blue-500 text-white"
+                    : "bg-white/20 text-white hover:bg-white/40 border border-white"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          <h2 className="text-2xl font-bold text-white mb-6">
             Available Movies
-          </h1>
+          </h2>
 
-          {loading ? <LoadingState /> : error ? <ErrorState /> : <MovieGrid />}
+          {loading ? (
+            <LoadingState />
+          ) : error ? (
+            <ErrorState />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {filteredMovies?.map((movie) => (
+                <MovieCard
+                  key={movie._id}
+                  movie={movie}
+                  onClick={handleMovieClick}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
-      <footer className="rounded-t-2xl grid grid-cols-3 bg-gradient-to-br from-[#7990B3] to-white backdrop-blur-sm py-20">
+
+      <footer className="rounded-t-2xl grid grid-cols-3 bg-gradient-to-br from-[#7990B3] to-white backdrop-blur-sm py-20 mt-20">
         <div className="flex items-center pl-8">
           <img src="/src/assets/img/image 6.svg" alt="Logo" className="mr-2" />
           <p className="font-bold text-xl mr-4">CINE.STAR</p>
