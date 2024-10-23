@@ -4,6 +4,7 @@ import { Clock } from "lucide-react";
 import axiosClient from "../helpers/axios";
 import CommentForm from "../components/Forms/Comments";
 import Button from "../components/Buttons/SubmitButton";
+import StarRating from "../components/rating";
 
 const MoviePreviewPage = () => {
   const { id } = useParams();
@@ -13,12 +14,26 @@ const MoviePreviewPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
+  const [ratings, setRatings] = useState({
+    averageRating: 0,
+    totalRatings: 0,
+    ratings: []
+  });
 
   useEffect(() => {
     const fetchMovieDetail = async () => {
       try {
-        const response = await axiosClient.get(`/film/${id}`);
-        setMovie(response.data);
+        const [movieResponse, ratingsResponse] = await Promise.all([
+          axiosClient.get(`/film/${id}`),
+          axiosClient.get(`film/${id}/ratings`)
+        ]);
+        
+        setMovie(movieResponse.data);
+        setRatings({
+          averageRating: ratingsResponse.data.averageRating || 0,
+          totalRatings: ratingsResponse.data.totalRatings || 0,
+          ratings: ratingsResponse.data.ratings || []
+        });
         setLoading(false);
       } catch (err) {
         setError(`Error fetching movie details: ${err.message}`);
@@ -28,21 +43,21 @@ const MoviePreviewPage = () => {
 
     fetchMovieDetail();
   }, [id]);
-
-  const handleSessionSelect = (session) => {
-    navigate(`/reservation/${session._id}`, {
-      state: {
-        movieVideo: movie.video,
-        movieImage: movie.image,
-        movieName: movie.name,
-        movieDuration: movie.duration,
-        sessionTime: session.hour,
-        sessionDate: session.date,
-        roomName: session.room.name,
-      },
-    });
+  const handleRating = async (rating) => {
+    try {
+      const response = await axiosClient.post(`/film/${id}/rate`, {
+        rating: rating
+      });
+      
+      setRatings({
+        averageRating: response.data.averageRating,
+        totalRatings: response.data.totalRatings,
+        ratings: response.data.ratings
+      });
+    } catch (err) {
+      setError(`Error submitting rating: ${err.message}`);
+    }
   };
-
   const groupSessionsByDate = () => {
     if (!movie || !movie.sessions) return {};
 
@@ -94,9 +109,9 @@ const MoviePreviewPage = () => {
   const groupedSessions = groupSessionsByDate();
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-black text-white">
       <div className="relative h-[70vh]">
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
         <img
           src={movie.image}
           alt={movie.name}
@@ -107,9 +122,9 @@ const MoviePreviewPage = () => {
           }}
         />
 
-        <video controls className=" w-1/3 mx-auto">
+        {/* <video controls className=" w-1/3 mx-auto">
           <source src={`${movie?.video}`} type="video/mp4" />
-        </video>
+        </video> */}
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <div className="max-w-6xl mx-auto">
             <h1 className="text-5xl font-bold mb-4">{movie.name}</h1>
@@ -118,6 +133,20 @@ const MoviePreviewPage = () => {
               <div className="flex items-center">
                 <Clock className="w-5 h-5 mr-2" />
                 <span>{movie.duration} min</span>
+                
+
+              </div>
+              <div className="flex flex-col items-start gap-2">
+                <StarRating
+                  maxRating={5}
+                  size={24}
+                  defaultRating={ratings.averageRating}
+                  onSetRating={handleRating}
+                />
+                <span className="text-sm text-gray-400">
+                  {ratings.totalRatings} {ratings.totalRatings === 1 ? 'rating' : 'ratings'} 
+                  {ratings.averageRating > 0 && ` • ${ratings.averageRating.toFixed(1)} average`}
+                </span>
               </div>
             </div>
           </div>

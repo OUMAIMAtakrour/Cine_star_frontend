@@ -232,7 +232,7 @@ const StreamingApp = () => {
         </div>
       </div>
 
-      <footer className="rounded-t-2xl grid grid-cols-3 bg-gradient-to-br from-[#494949] to-white backdrop-blur-sm py-20 mt-20">
+      <footer className=" grid grid-cols-3 bg-gradient-to-br from-[#494949] to-white backdrop-blur-sm py-20 mt-20">
         <div className="flex items-center pl-8">
           <img src="/src/assets/img/image 6.svg" alt="Logo" className="mr-2" />
           <p className="font-bold text-xl mr-4">CINE.STAR</p>

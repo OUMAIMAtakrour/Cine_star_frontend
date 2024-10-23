@@ -107,7 +107,7 @@ const MoviePreviewPage = () => {
   const groupedSessions = groupSessionsByDate();
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen  text-white">
       {/* <div className="relative h-[70vh]">
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
         <img
@@ -162,22 +162,22 @@ const MoviePreviewPage = () => {
       <div className="max-w-6xl mx-auto px-8 py-8">
         <h2 className="text-2xl font-bold mb-6">Comments</h2>
         {/* {comments.length === 0 ? ( */}
-        <ul className="space-y-4">
+        <ul className="space-y-4  ">
           {comments.map((comment, index) => (
-            <li key={index} className="bg-gray-800 p-4 rounded-md">
-              <div className="w-full break-words">{comment.content}</div>
+            <li key={index} className=" p-4 rounded-md bg-white/15">
+              <div className="w-full break-words ">{comment.content}</div>
             </li>
           ))}
         </ul>
 
         <form
           onSubmit={handleCommentSubmit}
-          className="mt-8 bg-gray-800 p-4 rounded-md"
+          className="mt-8  p-4 rounded-md"
         >
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            className="w-full p-2 bg-gray-700 text-white rounded-md"
+            className="w-full p-2 text-black rounded-md border-none"
             placeholder="Leave a comment..."
             rows="4"
             required
