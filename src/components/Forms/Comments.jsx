@@ -160,24 +160,12 @@ const MoviePreviewPage = () => {
       </div> */}
 
       <div className="max-w-6xl mx-auto px-8 py-8">
-        <h2 className="text-2xl font-bold mb-6">Comments</h2>
         {/* {comments.length === 0 ? ( */}
-        <ul className="space-y-4  ">
-          {comments.map((comment, index) => (
-            <li key={index} className=" p-4 rounded-md bg-white/15">
-              <div className="w-full break-words ">{comment.content}</div>
-            </li>
-          ))}
-        </ul>
-
-        <form
-          onSubmit={handleCommentSubmit}
-          className="mt-8  p-4 rounded-md"
-        >
+        <form onSubmit={handleCommentSubmit} className="mt-8  p-4 rounded-md">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            className="w-full p-2 text-black rounded-md border-none"
+            className="w-full p-2 text-white rounded-xl bg-transparent border-blue-500"
             placeholder="Leave a comment..."
             rows="4"
             required
@@ -190,6 +178,22 @@ const MoviePreviewPage = () => {
             Submit Comment
           </Button>
         </form>
+        <div className="mt-6 border border-white rounded-xl p-6">
+          {" "}
+          <h2 className="text-2xl font-bold mb-6">Comments</h2>
+          <ul className="space-y-4  ">
+            {comments && comments.length === 0 ? (
+              <span>No comments. Be the first</span>
+            ) : (
+              comments.map
+              ((comment, index) => (
+                <li key={index} className=" p-4 rounded-md bg-white/10">
+                  <div className="w-full break-words ">{comment.content}</div>
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
       </div>
     </div>
   );

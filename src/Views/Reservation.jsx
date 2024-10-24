@@ -23,7 +23,7 @@ const CinemaBooking = () => {
   const { sessionId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { movieName, movieDuration, sessionTime, sessionDate, roomName } = location.state || {};
+  const { movieName, sessionTime, sessionDate, roomName } = location.state || {};
 
   const [seats, setSeats] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -34,13 +34,17 @@ const CinemaBooking = () => {
   useEffect(() => {
     const fetchSeats = async () => {
       try {
-       
         const response = await axiosClient.get(`/session/${sessionId}`);
-        setSeats(response.data);
-        setLoading(false);
+        const seatData = response.data.seats;  
+        if (seatData && seatData.length > 0) {
+          setSeats(seatData);
+        } else {
+          console.log('No seats available');
+        }
       } catch (err) {
         setError(`Error fetching seats: ${err.message}`);
-        setLoading(false);
+      } finally {
+        setLoading(false); 
       }
     };
 
@@ -48,9 +52,9 @@ const CinemaBooking = () => {
   }, [sessionId]);
 
   const handleSeatSelect = (seatId) => {
-    setSelectedSeats(prev => 
+    setSelectedSeats((prev) =>
       prev.includes(seatId)
-        ? prev.filter(id => id !== seatId)
+        ? prev.filter((id) => id !== seatId)
         : [...prev, seatId]
     );
   };
@@ -68,7 +72,6 @@ const CinemaBooking = () => {
         clientId: 'current-user-id' 
       });
   
-    
       navigate('/booking-confirmation', {
         state: {
           movieName,
@@ -83,7 +86,6 @@ const CinemaBooking = () => {
       alert('Error making reservation: ' + error.message);
     }
   };
-  
 
   if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center">Loading...</div>;
   if (error) return <div className="min-h-screen bg-black text-white flex items-center justify-center">{error}</div>;

@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/reservation/:id",
+    path: "/session/:id",
     element: <CinemaBooking />,
   },
   {

@@ -65,6 +65,7 @@ const StreamingApp = () => {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [featuredMovies, setFeaturedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(""); 
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -131,10 +132,20 @@ const StreamingApp = () => {
     );
   }, [movies, selectedCategory]);
 
+  useEffect(() => {
+    const filtered = movies.filter((movie) =>
+      movie.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredMovies(filtered);
+  }, [searchTerm, movies]);
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
   const handleMovieClick = (movieId) => {
     navigate(`/film/${movieId}/sessions`);
   };
-
+  
   const LoadingState = () => (
     <div className="flex justify-center items-center min-h-[400px]">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -157,7 +168,21 @@ const StreamingApp = () => {
     <div className="min-h-screen body bg-blue-gray-500 pt-6">
       <div className="glass mx-4 pb-4">
         <div className="pt-5 mx-10">
-          <HomeHeader />
+          <HomeHeader onSearch={handleSearch} /> 
+      
+      {/* <div className="container mx-auto px-4 py-8">
+        {loading ? (
+          <div>Loading...</div>
+        ) : error ? (
+          <div>{error}</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredMovies.map((movie) => (
+              <MovieCard key={movie._id} movie={movie} />
+            ))}
+          </div>
+        )}
+      </div> */}
         </div>
 
         <div className="container mx-auto px-4 py-8">

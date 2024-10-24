@@ -51,7 +51,7 @@ export default function StarRating({
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
             key={i}
-            onRate={() => handelRating(i + 1)}
+            // onRate={() => handelRating(i + 1)}
             full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
          
             color={color}
