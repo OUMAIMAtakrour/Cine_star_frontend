@@ -17,6 +17,7 @@ const IconHome = () => (
     />
   </svg>
 );
+
 const IconFilm = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -33,6 +34,7 @@ const IconFilm = () => (
     />
   </svg>
 );
+
 const IconTv = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -49,6 +51,7 @@ const IconTv = () => (
     />
   </svg>
 );
+
 const IconUsers = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -65,6 +68,7 @@ const IconUsers = () => (
     />
   </svg>
 );
+
 const IconSettings = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -89,14 +93,14 @@ const IconSettings = () => (
 );
 
 const StatCard = ({ title, value, description, icon: Icon }) => (
-  <div className="bg-white rounded-lg shadow-md p-6 flex items-center">
+  <div className="bg-black rounded-lg shadow-md p-6 flex items-center">
     <div className="mr-4 text-blue-500">
       <Icon />
     </div>
     <div>
-      <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-      <p className="text-2xl font-bold text-blue-600">{value}</p>
-      <p className="text-sm text-gray-500">{description}</p>
+      <h3 className="text-lg font-semibold text-white">{title}</h3>
+      <p className="text-2xl font-bold text-blue-500">{value}</p>
+      <p className="text-sm text-gray-400">{description}</p>
     </div>
   </div>
 );
@@ -111,7 +115,7 @@ const Sidebar = ({ activeItem, setActiveItem }) => {
   ];
 
   return (
-    <div className="w-64 bg-white h-screen shadow-lg">
+    <div className="w-64 bg-gray-600  shadow-3xl">
       <div className="p-4">
         <h2 className="text-2xl font-bold text-blue-500">Cinema Admin</h2>
       </div>
@@ -121,8 +125,8 @@ const Sidebar = ({ activeItem, setActiveItem }) => {
             key={item.name}
             className={`flex items-center p-4 cursor-pointer ${
               activeItem === item.name
-                ? "bg-blue-100 text-blue-600"
-                : "text-gray-600 hover:bg-blue-50"
+                ? "bg-blue-500 text-white"
+                : "text-gray-400 hover:bg-blue-500 hover:text-white"
             }`}
             onClick={() => setActiveItem(item.name)}
           >
@@ -151,10 +155,10 @@ const CinemaAdminDashboard = () => {
   const data = generateDummyData();
 
   return (
-    <div className="flex bg-blue-50 min-h-screen">
+    <div className="flex bg-black min-h-screen">
       <Sidebar activeItem={activeItem} setActiveItem={setActiveItem} />
       <div className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-6 text-blue-800">
+        <h1 className="text-3xl font-bold mb-6 text-blue-500">
           Cinema Admin Dashboard
         </h1>
 
@@ -167,28 +171,25 @@ const CinemaAdminDashboard = () => {
           />
           <StatCard
             title="Active Subscriptions"
-            value="2,345"
-            description="+15.5% from last month"
-            icon={IconFilm}
-          />
-          <StatCard
-            title="Total Movies"
-            value="1,200"
-            description="50 added this month"
-            icon={IconFilm}
-          />
-          <StatCard
-            title="Total Series"
-            value="450"
-            description="10 new series this month"
+            value="4,582"
+            description="+12.9% from last month"
             icon={IconTv}
+          />
+          <StatCard
+            title="Movies"
+            value="348"
+            description="+8.4% from last month"
+            icon={IconFilm}
+          />
+          <StatCard
+            title="Settings"
+            value="Manage"
+            description="Configure system settings"
+            icon={IconSettings}
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Content Performance</h2>
-          <MoviesManagement></MoviesManagement>
-        </div>
+        {activeItem === "Movies" && <MoviesManagement />}
       </div>
     </div>
   );
