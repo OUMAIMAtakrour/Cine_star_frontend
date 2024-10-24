@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import MoviesManagement from "./MovieManagement";
 
 const IconHome = () => (
   <svg
@@ -186,6 +187,7 @@ const CinemaAdminDashboard = () => {
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">Content Performance</h2>
+          <MoviesManagement></MoviesManagement>
         </div>
       </div>
     </div>

@@ -5,15 +5,22 @@ import axiosClient from "../helpers/axios";
 import CommentForm from "../components/Forms/Comments";
 import Button from "../components/Buttons/SubmitButton";
 import StarRating from "../components/rating";
-import { ToastContainer,toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTwitter,
+  faFacebook,
+  faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
 
 const Seat = ({ seat, isSelected, onSelect }) => {
   const isReserved = seat.status === "Reserved";
-  
+
   const baseStyles = "w-12 h-12 rounded-lg transition-colors duration-200";
-  const stateStyles = isReserved 
+  const stateStyles = isReserved
     ? "bg-white border border-gray-300 cursor-not-allowed"
-    : isSelected 
+    : isSelected
     ? "bg-yellow-400"
     : "bg-gray-600 hover:bg-yellow-400 cursor-pointer";
 
@@ -29,7 +36,7 @@ const Seat = ({ seat, isSelected, onSelect }) => {
 
 const MoviePreviewPage = () => {
   const { id } = useParams();
-  
+
   const [movie, setMovie] = useState(null);
   const [sessions, setSessions] = useState([]);
   const [imageError, setImageError] = useState(false);
@@ -119,12 +126,12 @@ const MoviePreviewPage = () => {
 
   const handleSeatSelect = (seatId) => {
     setSelectedSeats((prev) => {
-      const seatObject = seats.find(seat => seat._id === seatId);
-      
-      const isAlreadySelected = prev.some(seat => seat._id === seatId);
-      
+      const seatObject = seats.find((seat) => seat._id === seatId);
+
+      const isAlreadySelected = prev.some((seat) => seat._id === seatId);
+
       if (isAlreadySelected) {
-        return prev.filter(seat => seat._id !== seatId);
+        return prev.filter((seat) => seat._id !== seatId);
       } else {
         return [...prev, seatObject];
       }
@@ -134,7 +141,7 @@ const MoviePreviewPage = () => {
   const handleBooking = async () => {
     try {
       if (selectedSeats.length === 0) {
-        toast.error('Please select at least one seat', {
+        toast.error("Please select at least one seat", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -144,18 +151,18 @@ const MoviePreviewPage = () => {
         });
         return;
       }
-  
-      const formattedSeats = selectedSeats.map(seat => ({
+
+      const formattedSeats = selectedSeats.map((seat) => ({
         row: seat.row,
-        number: seat.number
+        number: seat.number,
       }));
-  
-      await axiosClient.post('/reservation/create', {
+
+      await axiosClient.post("/reservation/create", {
         sessionId: selectedSession._id,
-        seats: formattedSeats
+        seats: formattedSeats,
       });
-  
-      toast.success('Booking successful!', {
+
+      toast.success("Booking successful!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -165,9 +172,9 @@ const MoviePreviewPage = () => {
       });
 
       setSelectedSeats([]);
-      fetchSeats(selectedSession._id); 
+      fetchSeats(selectedSession._id);
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Error making reservation', {
+      toast.error(error.response?.data?.message || "Error making reservation", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -190,7 +197,7 @@ const MoviePreviewPage = () => {
 
   const groupSessionsByDate = () => {
     if (!sessions.length) return {};
-    
+
     return sessions.reduce((acc, session) => {
       const date = new Date(session.date).toLocaleDateString();
       if (!acc[date]) {
@@ -227,19 +234,19 @@ const MoviePreviewPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white">
-    <ToastContainer 
-      position="top-right"
-      autoClose={3000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="dark"
-    />
-      
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+
       <div className="relative h-[70vh]">
         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent" />
         <img
@@ -248,7 +255,9 @@ const MoviePreviewPage = () => {
           className="w-full h-full object-cover"
           onError={(e) => {
             setImageError(true);
-            e.target.src = `/api/placeholder/800/600?text=${encodeURIComponent(movie.name)}`;
+            e.target.src = `/api/placeholder/800/600?text=${encodeURIComponent(
+              movie.name
+            )}`;
           }}
         />
 
@@ -268,8 +277,10 @@ const MoviePreviewPage = () => {
                   onSetRating={handleRating}
                 />
                 <span className="text-sm text-gray-400">
-                  {ratings.totalRatings} {ratings.totalRatings === 1 ? "rating" : "ratings"}
-                  {ratings.averageRating > 0 && ` • ${ratings.averageRating.toFixed(1)} average`}
+                  {ratings.totalRatings}{" "}
+                  {ratings.totalRatings === 1 ? "rating" : "ratings"}
+                  {ratings.averageRating > 0 &&
+                    ` • ${ratings.averageRating.toFixed(1)} average`}
                 </span>
               </div>
             </div>
@@ -279,7 +290,7 @@ const MoviePreviewPage = () => {
 
       <div className="max-w-6xl mx-auto px-8 py-12">
         <h2 className="text-2xl font-bold mb-6">Available Sessions</h2>
-        
+
         {Object.entries(groupedSessions).length === 0 ? (
           <p className="text-gray-400">No sessions available for this movie.</p>
         ) : (
@@ -316,7 +327,8 @@ const MoviePreviewPage = () => {
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold mb-2">Select Your Seats</h2>
             <p className="text-gray-400">
-              {new Date(selectedSession.date).toLocaleDateString()} - {selectedSession.hour} - Room {selectedSession.room.name}
+              {new Date(selectedSession.date).toLocaleDateString()} -{" "}
+              {selectedSession.hour} - Room {selectedSession.room.name}
             </p>
           </div>
 
@@ -337,17 +349,22 @@ const MoviePreviewPage = () => {
 
           <div className="container perspective mb-8">
             <div className="screen bg-white/20 h-24 w-full mb-4 transform -skew-x-12"></div>
-            
+
             <div className="space-y-4">
               {Object.entries(groupSeatsByRow(seats)).map(([row, rowSeats]) => (
-                <div key={row} className="flex justify-center items-center gap-4">
+                <div
+                  key={row}
+                  className="flex justify-center items-center gap-4"
+                >
                   <span className="text-gray-400 w-8">{row}</span>
                   <div className="flex gap-4">
                     {rowSeats.map((seat) => (
                       <Seat
                         key={seat._id}
                         seat={seat}
-                        isSelected={selectedSeats.some(selected => selected._id === seat._id)}
+                        isSelected={selectedSeats.some(
+                          (selected) => selected._id === seat._id
+                        )}
                         onSelect={handleSeatSelect}
                       />
                     ))}
@@ -359,8 +376,12 @@ const MoviePreviewPage = () => {
 
           <div className="text-center mb-8">
             <p className="text-lg mb-4">
-              You have selected <span className="text-yellow-400">{selectedSeats.length}</span> seat(s) 
-              for a price of RS.<span className="text-yellow-400">{selectedSeats.length * price}</span>
+              You have selected{" "}
+              <span className="text-yellow-400">{selectedSeats.length}</span>{" "}
+              seat(s) for a price of RS.
+              <span className="text-yellow-400">
+                {selectedSeats.length * price}
+              </span>
             </p>
             <Button
               onClick={handleBooking}
@@ -378,6 +399,61 @@ const MoviePreviewPage = () => {
       <div className="max-w-6xl mx-auto px-8 py-12">
         <CommentForm onAddComment={handleAddComment} />
       </div>
+      <footer className=" grid grid-cols-3 bg-gradient-to-br from-[#494949] to-white backdrop-blur-sm py-20 mt-20">
+        <div className="flex items-center pl-8">
+          <img src="/src/assets/img/image 6.svg" alt="Logo" className="mr-2" />
+          <p className="font-bold text-xl mr-4">CINE.STAR</p>
+        </div>
+
+        <div className="flex flex-col items-center space-y-8">
+          <div className="flex justify-center gap-8 text-xl">
+            <Link className="hover:text-gray-700 transition-colors">HOME</Link>
+            <Link className="hover:text-gray-700 transition-colors">
+              SESSION
+            </Link>
+            <Link className="hover:text-gray-700 transition-colors">
+              MOVIES
+            </Link>
+          </div>
+          <p className="text-sm text-gray-600">©All rights reserved</p>
+        </div>
+
+        <div className="flex space-x-4">
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon
+              icon={faTwitter}
+              size="lg"
+              className="hover:text-gray-700 transition-colors"
+            />
+          </a>
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon
+              icon={faFacebook}
+              size="lg"
+              className="hover:text-gray-700 transition-colors"
+            />
+          </a>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon
+              icon={faInstagram}
+              size="lg"
+              className="hover:text-gray-700 transition-colors"
+            />
+          </a>
+        </div>
+      </footer>
     </div>
   );
 };

@@ -65,7 +65,7 @@ const StreamingApp = () => {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [featuredMovies, setFeaturedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState(""); 
+  const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -145,7 +145,7 @@ const StreamingApp = () => {
   const handleMovieClick = (movieId) => {
     navigate(`/film/${movieId}/sessions`);
   };
-  
+
   const LoadingState = () => (
     <div className="flex justify-center items-center min-h-[400px]">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -168,9 +168,9 @@ const StreamingApp = () => {
     <div className="min-h-screen body bg-blue-gray-500 pt-6">
       <div className="glass mx-4 pb-4">
         <div className="pt-5 mx-10">
-          <HomeHeader onSearch={handleSearch} /> 
-      
-      {/* <div className="container mx-auto px-4 py-8">
+          <HomeHeader onSearch={handleSearch} />
+
+          {/* <div className="container mx-auto px-4 py-8">
         {loading ? (
           <div>Loading...</div>
         ) : error ? (
